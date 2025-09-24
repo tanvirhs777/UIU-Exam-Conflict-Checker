@@ -1,0 +1,533 @@
+/* ===========================
+   UIU Exam Routine — index.css
+   Polished look without Tailwind (with centering fix)
+   =========================== */
+/* ===========================
+   UIU Exam Routine — index.css
+   Smoky White / Glass Theme
+   =========================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+* { box-sizing: border-box; }
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+  color: #1f2937; /* gray-800 */
+  background: #faf9f7; /* Smoky white */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+
+
+
+/* Theme variables */
+:root {
+  --bg-card: #ffffff;
+  --bg-card-tint: rgba(255,255,255,0.7);
+  --text-800: #1f2937;
+  --text-600: #4b5563;
+  --text-400: #9ca3af;
+
+  --blue-600: #f3f5fa;
+  --blue-700: #f5f6f9;
+  --green-600: #16a34a;
+  --red-600: #dc2626;
+
+  --shadow-lg: 0 20px 30px -12px rgba(0,0,0,0.12);
+  --shadow-md: 0 10px 20px -10px rgba(0,0,0,0.08);
+  --radius-lg: 16px;
+  --border: 1px solid rgba(17, 24, 39, 0.06);
+}
+
+/* Headings */
+h1.text-4xl {
+  font-size: 2.25rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--text-700);
+
+}
+p.text-center.text-gray-600 {
+  color: var(--text-600);
+  margin: 0 auto 2rem auto;
+  max-width: 48rem;
+}
+
+/* Cards (glass look) */
+.bg-white.rounded-lg.shadow-lg {
+  background: var(--bg-card-tint);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  animation: fadeInUp .2s ease-out both;
+}
+
+/* Inputs */
+input[type="text"] {
+  width: 100%;
+  border: 1px solid rgba(17,24,39,0.08);
+  background: #fff;
+  border-radius: 12px;
+  padding: 0.9rem 1rem;
+  font-size: 1rem;
+  color: var(--text-800);
+  transition: box-shadow .2s ease, border-color .2s ease;
+}
+input[type="text"]::placeholder {
+  color: var(--text-400);
+}
+input[type="text"]:focus {
+  outline: none;
+  border-color: var(--blue-600);
+  box-shadow: 0 0 0 3px rgba(37,99,235,0.25);
+}
+
+/* Buttons */
+button {
+  cursor: pointer;
+  border: none;
+  border-radius: 12px;
+  font-weight: 600;
+  padding: 0.75rem 1.25rem;
+  transition: transform .08s ease, box-shadow .2s ease;
+  box-shadow: var(--shadow-md);
+}
+button:active { transform: translateY(1px); }
+button.bg-blue-600 { background: var(--blue-600); color: #fff; }
+button.bg-blue-600:hover { background: var(--blue-700); }
+button.bg-green-600 { background: var(--green-600); color: #fff; }
+button.bg-red-600 { background: var(--red-600); color: #fff; }
+
+/* Rows */
+.result-row, .selected-row {
+  border: 1px solid rgba(17,24,39,0.08);
+  border-radius: 14px;
+  padding: 1rem;
+  background: #fff;
+  transition: background .2s ease, transform .08s ease;
+}
+.result-row:hover { background: #f9fafb; transform: translateY(-1px); }
+.selected-row { background: #f0fdf4; border-color: #bbf7d0; }
+
+/* Modal */
+.fixed.inset-0.bg-black.bg-opacity-50 {
+  background: rgba(0,0,0,0.5);
+  display: flex; align-items: center; justify-content: center;
+  backdrop-filter: blur(3px);
+}
+
+/* Scrollbar */
+.overflow-y-auto::-webkit-scrollbar { width: 8px; }
+.overflow-y-auto::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,0.2);
+  border-radius: 999px;
+}
+
+/* Animations */
+/* ===========================
+   Animations for Add/Remove Course
+   =========================== */
+
+/* Fade + slide in when a course is added */
+@keyframes courseAdd {
+  0%   { opacity: 0; transform: translateY(12px) scale(0.96); }
+  60%  { opacity: 1; transform: translateY(-2px) scale(1.02); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Fade + shrink out when a course is removed */
+@keyframes courseRemove {
+  0%   { opacity: 1; transform: translateY(0) scale(1); }
+  40%  { opacity: 0.5; transform: translateY(6px) scale(0.98); }
+  100% { opacity: 0; transform: translateY(12px) scale(0.9); height: 0; margin: 0; padding: 0; }
+}
+
+/* Apply animation when row is added */
+.selected-row.adding {
+  animation: courseAdd 0.35s ease-out;
+}
+
+/* Apply animation when row is removed */
+.selected-row.removing {
+  animation: courseRemove 0.3s ease-in forwards;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Centering Exam Schedule */
+.exam-schedule-wrapper {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+}
+.exam-schedule-card {
+  width: 100%;
+  max-width: 650px;
+  margin: 0 auto;
+}
+
+/* 1) Font & base reset */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+* { box-sizing: border-box; }
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+body {
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+  color: #1f2937; /* gray-800 */
+  body {
+    background: linear-gradient(180deg, #fcfcfc 0%, #faf9f7 50%, #f7f7f6 100%);
+  }
+  
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* 2) CSS variables (theme) */
+:root{
+  --bg-card: #ffffff;
+  --bg-card-tint: rgba(255,255,255,0.65);
+  --text-800: #1f2937;
+  --text-700: #374151;
+  --text-600: #4b5563;
+  --text-500: #6b7280;
+  --text-400: #9ca3af;
+
+  --blue-500: #3b82f6;
+  --blue-600: #2563eb;
+  --blue-700: #1d4ed8;
+
+  --green-600: #16a34a;
+  --green-700: #15803d;
+
+  --red-600: #dc2626;
+  --red-700: #b91c1c;
+
+  --ring: 0 0 0 3px rgba(59,130,246,0.35); /* blue-500 ring */
+  --shadow-lg: 0 20px 30px -12px rgba(0,0,0,0.18), 0 8px 12px -6px rgba(0,0,0,0.12);
+  --shadow-md: 0 10px 20px -10px rgba(0,0,0,0.15), 0 4px 8px -4px rgba(0,0,0,0.08);
+  --radius-lg: 16px;
+  --radius-md: 12px;
+  --radius-sm: 10px;
+  --border: 1px solid rgba(17, 24, 39, 0.08); /* gray-900 @ 8% */
+}
+
+/* 3) Utility shims (minimal Tailwind-y pieces you used) */
+.min-h-screen { min-height: 100vh; }
+.p-6 { padding: 1.5rem; }
+.p-2 { padding: 0.5rem; }
+.p-4 { padding: 1rem; }
+.px-4 { padding-left: 1rem; padding-right: 1rem; }
+.px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
+.px-8 { padding-left: 2rem; padding-right: 2rem; }
+.py-2 { padding-top: .5rem; padding-bottom: .5rem; }
+.py-3 { padding-top: .75rem; padding-bottom: .75rem; }
+.py-12 { padding-top: 3rem; padding-bottom: 3rem; }
+.mb-2 { margin-bottom: .5rem; }
+.mb-4 { margin-bottom: 1rem; }
+.mb-8 { margin-bottom: 2rem; }
+.mt-2 { margin-top: .5rem; }
+.mx-auto { margin-left: auto; margin-right: auto; }
+.text-center { text-align: center; }
+.text-lg { font-size: 1.125rem; line-height: 1.75rem; }
+.text-2xl { font-size: 1.5rem; line-height: 2rem; }
+.text-4xl { font-size: 2.25rem; line-height: 2.5rem; }
+.font-medium { font-weight: 500; }
+.font-semibold { font-weight: 600; }
+.font-bold { font-weight: 700; }
+
+.text-gray-800 { color: var(--text-800); }
+.text-gray-700 { color: var(--text-700); }
+.text-gray-600 { color: var(--text-600); }
+.text-gray-500 { color: var(--text-500); }
+.text-gray-400 { color: var(--text-400); }
+.text-blue-600 { color: var(--blue-600); }
+
+.bg-white { background: var(--bg-card); }
+.bg-green-50 { background: #ecfdf5; } /* tealish green-50 */
+.bg-black { background: rgba(0,0,0,1); }
+.bg-opacity-50 { opacity: .5; }
+.rounded-lg { border-radius: var(--radius-lg); }
+.rounded-full { border-radius: 9999px; }
+.shadow-lg { box-shadow: var(--shadow-lg); }
+.border { border: var(--border); }
+.border-gray-200 { border-color: rgba(229,231,235,1); }
+.border-green-200 { border-color: #bbf7d0; }
+
+/* Grid helpers used in layout */
+.grid { display: grid; gap: 1.5rem; }
+.grid-cols-1 { grid-template-columns: 1fr; }
+@media (min-width: 1024px){
+  .lg\\:grid-cols-2 { grid-template-columns: 1fr 1fr; }
+}
+
+/* Flex helpers */
+.flex { display: flex; }
+.items-start { align-items: flex-start; }
+.items-center { align-items: center; }
+.justify-center { justify-content: center; }
+.justify-between { justify-content: space-between; }
+.gap-3 { gap: .75rem; }
+.w-full { width: 100%; }
+.max-w-2xl { max-width: 42rem; }
+.max-w-6xl { max-width: 72rem; }
+
+/* Hover helpers (only a few actually used) */
+.hover\\:bg-gray-50:hover { background: #f9fafb; }
+.hover\\:bg-blue-700:hover { background: var(--blue-700); }
+.hover\\:bg-green-700:hover { background: var(--green-700); }
+.hover\\:bg-red-700:hover { background: var(--red-700); }
+
+/* Fixed/modal helpers */
+.fixed { position: fixed; }
+.inset-0 { top: 0; right: 0; bottom: 0; left: 0; }
+.z-50 { z-index: 50; }
+
+/* 4) Cards & panels */
+.bg-white.rounded-lg.shadow-lg {
+  background: var(--bg-card-tint);
+  backdrop-filter: saturate(180%) blur(10px);
+  -webkit-backdrop-filter: saturate(180%) blur(10px);
+  border: var(--border);
+}
+
+/* 5) Headings & subtitle */
+h1.text-4xl {
+  letter-spacing: -0.02em;
+}
+p.text-center.text-gray-600 {
+  max-width: 56rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* 6) Search bar */
+input[type="text"]{
+  width: 100%;
+  border: 1px solid rgba(17,24,39,0.08);
+  background: #fff;
+  border-radius: 12px;
+  transition: box-shadow .2s ease, border-color .2s ease, transform .06s ease;
+}
+input[type="text"]::placeholder{
+  color: #94a3b8; /* slate-400 */
+}
+input[type="text"]:focus{
+  outline: none;
+  border-color: var(--white-500);
+  box-shadow: var(--ring);
+  transform: translateY(-1px);
+}
+
+/* 7) Buttons (blue / green / red) */
+button{
+  cursor: pointer;
+  border: none;
+  border-radius: 12px;
+  font-weight: 600;
+  transition: transform .06s ease, box-shadow .2s ease, background .2s ease;
+  box-shadow: var(--shadow-md);
+}
+button:active{
+  transform: translateY(1px);
+  box-shadow: none;
+}
+button.bg-blue-600{
+  background: var(--blue-600);
+  color: #fff;
+}
+button.bg-green-600{
+  background: var(--green-600);
+  color: #fff;
+}
+button.bg-red-600{
+  background: var(--red-600);
+  color: #fff;
+}
+
+/* Focus ring helpers */
+.focus\\:ring-2:focus{ box-shadow: 0 0 0 4px rgba(59,130,246,0.25) !important; }
+.focus\\:ring-blue-500:focus{ box-shadow: var(--ring) !important; }
+.focus\\:outline-none:focus{ outline: none !important; }
+
+/* 8) Result rows & selected rows */
+.result-row,
+.selected-row{
+  border: 1px solid rgba(17,24,39,0.08);
+  border-radius: 14px;
+  padding: 1rem;
+  background: #fff;
+  transition: background .2s ease, transform .08s ease, box-shadow .2s ease;
+}
+.result-row:hover{
+  background: #f9fafb;
+  transform: translateY(-1px);
+}
+.selected-row{
+  background: #ecfdf5; /* green-50 vibe */
+  border-color: #bbf7d0;
+}
+
+/* 9) Scroll areas */
+.max-h-96{
+  max-height: 24rem; /* 384px */
+}
+.overflow-y-auto{
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scroll-behavior: smooth;
+}
+/* pretty scrollbar (WebKit) */
+.overflow-y-auto::-webkit-scrollbar{
+  width: 10px;
+}
+.overflow-y-auto::-webkit-scrollbar-track{
+  background: rgba(0,0,0,0.04);
+  border-radius: 999px;
+}
+.overflow-y-auto::-webkit-scrollbar-thumb{
+  background: rgba(0,0,0,0.18);
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+.overflow-y-auto:hover::-webkit-scrollbar-thumb{
+  background: rgba(0,0,0,0.28);
+}
+
+/* 10) Small badges (program text) */
+.text-blue-600.font-medium{
+  display: inline-block;
+  padding: .125rem .5rem;
+  border-radius: 999px;
+  background: rgba(37,99,235,0.08);
+}
+
+/* 11) Modal */
+.fixed.inset-0.bg-black.bg-opacity-50{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  backdrop-filter: blur(2px);
+}
+.fixed.inset-0 .bg-white.rounded-lg.p-6{
+  max-width: 36rem;
+  width: 100%;
+  border-radius: 16px;
+  box-shadow: var(--shadow-lg);
+}
+
+/* 12) Icon bubble in modal */
+.bg-red-100{
+  background: #fee2e2;
+}
+.text-red-600{ color: var(--red-600); }
+
+/* 13) Nice subtle animations */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.bg-white.rounded-lg.shadow-lg,
+.result-row,
+.selected-row{
+  animation: fadeInUp .18s ease-out both;
+}
+
+/* 14) Links (if any appear) */
+a{
+  color: var(--blue-600);
+  text-decoration: none;
+}
+a:hover{ text-decoration: underline; }
+
+/* 15) Container helper for your top-level wrapper */
+.max-w-6xl.mx-auto{
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+@media (min-width: 640px){
+  .max-w-6xl.mx-auto{ padding-left: 1rem; padding-right: 1rem; }
+}
+@media (min-width: 1024px){
+  .max-w-6xl.mx-auto{ padding-left: 0; padding-right: 0; }
+}
+
+/* 16) Extra polish for headings/subheads */
+h2.text-2xl{
+  letter-spacing: -0.01em;
+  position: relative;
+  padding-bottom: .4rem;
+}
+h2.text-2xl::after{
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 3px;
+  width: 48px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--blue-600), rgba(37,99,235,0));
+  opacity: .6;
+}
+
+/* 17) Subtle press hover on card buttons inside rows */
+.result-row button,
+.selected-row button{
+  box-shadow: none;
+  transition: transform .06s ease, background .2s ease;
+}
+.result-row button:hover,
+.selected-row button:hover{
+  transform: translateY(-1px);
+}
+
+/* 18) >>> Centering helpers for "Your Exam Schedule" <<< */
+/* Put these classes on the schedule wrapper & card in your JSX:
+   <div className="exam-schedule-wrapper">
+     <div className="bg-white rounded-lg shadow-lg p-6 exam-schedule-card">...</div>
+   </div>
+*/
+.exam-schedule-wrapper{
+  /* If it's inside a grid, force it to occupy its own row */
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+.exam-schedule-card{
+  width: 100%;
+  max-width: 650px;  /* neat width */
+  margin: 0 auto;    /* safety fallback */
+}
+
+/* Optional: center any single card easily */
+.center-row{
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: center;
+}
+.center-row > .card{
+  width: 100%;
+  max-width: 650px;
+}
