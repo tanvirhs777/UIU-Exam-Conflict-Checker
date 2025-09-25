@@ -233,7 +233,7 @@ const ExamRoutineApp = () => {
                 type="text"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                placeholder="Search by course code, title, or program (e.g., CSE 1111, Machine Learning, BSCSE)..."
+                placeholder="Search by course code, title, or program"
                 className="flex-1 px-4 py-3 text-lg border-0 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
               />
