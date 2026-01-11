@@ -72,7 +72,7 @@ const courseData = [
     { "program": "BSCSE", "code": "CSE 4587", "title": "Cloud Computing", "day": 3, "slot": "T3" },
     { "program": "BSCSE", "code": "CSE 4889", "title": "Machine Learning", "day": 1, "slot": "T3" },
     { "program": "BSCSE", "code": "CSE 4891", "title": "Data Mining", "day": 7, "slot": "T1" },
-    { "program": "BSCSE", "code": "CSE 4883", "title": "Digital Image Processing", "day": 4, "slot": "T3" },
+    { "program": "BSCSE", "code": "CSE 4883", "title": "Digital Image Processing", "day": 4, "slot": "T1" },
     { "program": "BSCSE", "code": "CSE 4451", "title": "Human Computer Interaction", "day": 3, "slot": "T1" },
     { "program": "BSCSE", "code": "CSE 4435", "title": "Software Architecture", "day": 4, "slot": "T2" },
     { "program": "BSCSE", "code": "CSE 4181", "title": "Mobile Application Development", "day": 6, "slot": "T3" },
